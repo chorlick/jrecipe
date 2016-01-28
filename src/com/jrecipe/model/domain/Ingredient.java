@@ -1,4 +1,4 @@
-package com.jreceipe.model.domain;
+package com.jrecipe.model.domain;
 
 import java.io.Serializable;
 
@@ -153,5 +153,19 @@ public class Ingredient implements Serializable {
 	@Override
 	public String toString() {
 		return "Ingredient [id=" + id + ", name=" + name + ", unit=" + unit + ", value=" + value + "]";
+	}
+	
+	/**
+	 * Validate if the instance variables are valid
+	 * 
+	 * @return boolean - true if instance variables are valid, else false
+	 */
+	public Boolean validate() {
+		if(this.getId() == null || this.getId() < 0) return  false;
+		if(this.getName().length() == 0) return false;
+		if(this.getUnit().length() == 0) return false;
+		if(this.getValue().length() == 0) return false;
+		return true;
+			
 	}
 }

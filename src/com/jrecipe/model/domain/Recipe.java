@@ -1,4 +1,4 @@
-package com.jreceipe.model.domain;
+package com.jrecipe.model.domain;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,7 +14,9 @@ import java.util.List;
  */
 public class Recipe implements Serializable {
     
-    private Integer uid;
+	private static final long serialVersionUID = 5054293137257852541L;
+
+	private Integer uid;
     
     private String name;
     
@@ -22,6 +24,29 @@ public class Recipe implements Serializable {
     
     private List<Ingredient> ingredients;
 
+    /**
+     * Public void constructor.
+     */
+    public Recipe() {
+    	
+    }
+    
+    
+    /**
+     * Public constructor that accepts a set of arguments for fields.
+     * 
+     * @param id 
+     * @param name
+     * @param steps
+     * @param ingredients
+     */
+    public Recipe(Integer id, String name, List<RecipeStep> steps, List<Ingredient> ingredients){
+    	this.uid = id;
+    	this.name = name;
+    	this.steps = steps;
+    	this.ingredients = ingredients;
+    }
+    
 	/**
 	 * @return returns the id
 	 */
@@ -77,15 +102,21 @@ public class Recipe implements Serializable {
 		this.steps = steps;
 	}
 
-	
 	/**
+	 * Returns list of {@link Ingredient} for this {@link Recipe}
 	 * 
-	 * @return
+	 * @return List<Ingredient> list of {@link Ingredient}
 	 */
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
 
+	
+	/**
+	 * Setter for the ingredients of the recipe
+	 * 
+	 * @param ingredients List<Ingredient> list of {@link Ingredient}
+	 */
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
@@ -136,7 +167,21 @@ public class Recipe implements Serializable {
 	@Override
 	public String toString() {
 		return "Recipe [uid=" + uid + ", name=" + name + ", steps=" + steps + ", ingredients=" + ingredients + "]";
-	}     
+	}
+	
+	/**
+	 * Validate if the instance variables are valid
+	 * 
+	 * @return boolean - true if instance variables are valid, else false
+	 */
+	public Boolean validate() {
+		if(this.getUid() == null || this.getUid() < 0) return  false;
+		if(this.getName().length() == 0) return false;
+		if(this.getIngredients() == null ) return false;
+		if(this.getSteps() == null ) return false;
+		return true;
+			
+	}
 }
 
 
