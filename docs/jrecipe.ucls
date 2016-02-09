@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="com.jrecipe.model.domain.RecipeStep" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/RecipeStep.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="211" y="1135"/>    
+    <position height="340" width="159" x="41" y="833"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="com.jrecipe.model.domain.ShoppingList" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/ShoppingList.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="545" y="590"/>    
+    <position height="214" width="234" x="436" y="417"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="com.jrecipe.model.domain.Ingredient" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/Ingredient.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="549" y="1069"/>    
+    <position height="412" width="242" x="436" y="833"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="com.jrecipe.model.domain.Recipe" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/Recipe.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="209" y="660"/>    
+    <position height="376" width="355" x="41" y="417"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="com.jrecipe.model.domain.ShoppingItem" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/ShoppingItem.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="797" y="617"/>    
+    <position height="268" width="190" x="710" y="417"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="com.jrecipe.model.domain.RecipeGroup" project="jrecipe" 
     file="/jrecipe/src/com/jrecipe/model/domain/RecipeGroup.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="212" y="207"/>    
+    <position height="340" width="266" x="41" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

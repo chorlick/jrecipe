@@ -40,7 +40,10 @@ public class Recipe implements Serializable {
      * @param steps
      * @param ingredients
      */
-    public Recipe(Integer id, String name, List<RecipeStep> steps, List<Ingredient> ingredients){
+    public Recipe(Integer id, 
+    		String name, 
+    		List<RecipeStep> steps, 
+    		List<Ingredient> ingredients){
     	this.uid = id;
     	this.name = name;
     	this.steps = steps;
