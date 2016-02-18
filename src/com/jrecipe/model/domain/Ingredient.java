@@ -19,12 +19,16 @@ public class Ingredient implements Serializable {
 	 */
 	private static final long serialVersionUID = -5336064785973347525L;
 
+	/* unique id of this object */
 	private Integer id;
     
+	/* display text for this object */
     private String name;
     
+    /* units of the measurment */
     private String unit;
     
+    /* value of the measurement */
     private String value;
     
     /**
@@ -107,6 +111,10 @@ public class Ingredient implements Serializable {
      */
     public void setValue(String value) { this.value = value; }
     
+	/**
+	 * Hashcode for class.)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,6 +126,10 @@ public class Ingredient implements Serializable {
 		return result;
 	}
 	
+	/** 
+	 * The equals method for this object
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -150,6 +162,10 @@ public class Ingredient implements Serializable {
 		return true;
 	}
 	
+	/**
+	 * The Hash Code method for this object
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public String toString() {
 		return "Ingredient [id=" + id + ", name=" + name + ", unit=" + unit + ", value=" + value + "]";

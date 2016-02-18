@@ -1,20 +1,16 @@
 package com.jrecipe.model.services.recipegroupservice;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.jrecipe.model.business.exception.ServiceLoadException;
-import com.jrecipe.model.domain.Ingredient;
-import com.jrecipe.model.domain.Recipe;
 import com.jrecipe.model.domain.RecipeGroup;
 import com.jrecipe.model.services.exception.RecipeGroupNotFoundException;
-import com.jrecipe.model.services.exception.RecipeGroupSearchFailedException;
 import com.jrecipe.model.services.factory.ServiceFactory;
-import com.jrecipe.model.services.recipeservice.RecipeServiceImpl;
-
-import junit.framework.TestCase;
 
 /** 
  * Simple JUnit test class to test the functionality
@@ -24,9 +20,17 @@ import junit.framework.TestCase;
  * @version 0.0.2
  * @since 0.0.2
  */
-public class RecipeGroupServiceImplTest extends TestCase {
+public class RecipeGroupServiceImplTest {
+	
+	/**
+	 * Singleton reference object for testing
+	 */
 	ServiceFactory serviceFactory;
 	
+	/**
+	 * Sets up the service factory object for testing.
+	 * @throws Exception Throws exception on unable to get instance. 
+	 */
 	@Before
 	public void setUp() throws Exception {
 		serviceFactory = ServiceFactory.getInstance();		
@@ -35,7 +39,6 @@ public class RecipeGroupServiceImplTest extends TestCase {
 	/**
 	 * Searches the group for a single recipe.
 	 */
-	@Test
 	public void testSearchGroup() {
 		RecipeGroupServiceImpl service;
 		RecipeGroup group;
@@ -50,9 +53,6 @@ public class RecipeGroupServiceImplTest extends TestCase {
 		} catch (ServiceLoadException | IOException e) {
 			e.printStackTrace();
 			fail("Service load issue");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			fail("Class not found");
 		} catch (RecipeGroupNotFoundException e) {
 			e.printStackTrace();
 			fail("Recipe group not found");

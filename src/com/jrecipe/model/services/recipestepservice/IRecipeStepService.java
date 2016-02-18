@@ -11,4 +11,8 @@ import com.jrecipe.model.services.IService;
  */
 public interface IRecipeStepService extends IService {
 
+	/**
+	 * Identifier for this service. 
+	 */
+	public final String NAME = "IRecipeStepService";
 }

@@ -14,7 +14,12 @@ import java.util.List;
  */
 public class ShoppingList implements Serializable {
 	
+    /**
+	 * private unique id for Serializable class.
+	 */
 	private static final long serialVersionUID = 3307237536696728304L;
+	
+	/* list of ingredients in shopping list*/
 	private List<Ingredient> ingredients;
 
 	/**
@@ -36,6 +41,9 @@ public class ShoppingList implements Serializable {
 		this.ingredients = ingredients;
 	}
 
+	/**
+	 * Hash code for the shopping list object. 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -44,6 +52,9 @@ public class ShoppingList implements Serializable {
 		return result;
 	}
 
+	/**
+	 * Used to evaulate equality of an object. 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -61,6 +72,9 @@ public class ShoppingList implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Prints the object to a string. 
+	 */
 	@Override
 	public String toString() {
 		return "ShoppingList [ingredients=" + ingredients + "]";

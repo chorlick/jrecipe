@@ -10,6 +10,7 @@ import java.nio.file.AccessDeniedException;
 
 import com.jrecipe.model.domain.RecipeStep;
 import com.jrecipe.model.services.exception.RecipeStepNotFoundException;
+import com.jrecipe.model.services.factory.ServiceFactory;
 
 /**
  * Implementation for RecipeStepService
@@ -21,6 +22,44 @@ import com.jrecipe.model.services.exception.RecipeStepNotFoundException;
 public class RecipeStepServiceImpl implements IRecipeStepService {
 	
 	/**
+	 * Function to save RecipeStep to disk
+	 * 
+	 * @param rs RecipeStep the user wishes to save
+	 * @return Boolean true if saved corectly
+	 * @throws IOException 
+	 */
+	public Boolean saveRecipeStep(RecipeStep rs) throws IOException {
+		Boolean ret = true;
+		FileOutputStream pfile = null;
+		ObjectOutputStream ofile = null;
+		String fileName = new String(ServiceFactory.getInstance().getUserHome() + rs.getUid() + ".recipestep");
+		File file = new File(fileName);
+		File home = new File(ServiceFactory.getInstance().getUserHome());
+		if(!home.canWrite()) {
+			throw new AccessDeniedException("Cannot write to directory " + fileName);
+		}
+
+		try {
+			file.createNewFile();
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(rs);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(ofile != null) {
+				ofile.close();
+			}
+	
+			if(pfile != null) {
+				pfile.close();	
+			}
+		}
+		return ret;	
+	}
+	
+	/**
 	 * Attempts to load an RecipeStep from disk.
 	 * 
 	 * @param id Numerical id of Ingredient.
@@ -29,21 +68,33 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 	 * 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
-	public RecipeStep loadRecipeStep(Integer id) throws RecipeStepNotFoundException, IOException, ClassNotFoundException {
+	public RecipeStep loadRecipeStep(Integer id) throws RecipeStepNotFoundException {
 		RecipeStep rs = null;
-		
 		String fileName = new String(id + ".recipestep");
 		File file = new File(fileName);
-		
+		ObjectInputStream ios = null;
 		if(!file.exists()) {
 			throw new RecipeStepNotFoundException("No RecipeStep found matching id(" + id +")");
 		}
 		
-		FileInputStream pfile = new FileInputStream(fileName);
-		ObjectInputStream ios = new ObjectInputStream(pfile);
+		FileInputStream pfile;
+		try {
+			pfile = new FileInputStream(fileName);
+			ios = new ObjectInputStream(pfile);
+			rs  = (RecipeStep) ios.readObject();
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RecipeStepNotFoundException("RecipeStep was not found");
+		}finally {
+			try {
+				if(ios != null) {
+					ios.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
-		rs  = (RecipeStep) ios.readObject();
-		ios.close();
 		return rs;
 	}
 	
@@ -74,12 +125,14 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 	 * @return Boolean returns true if the RecipeSTep is updated, false if not. 
 	 * @throws IOException
 	 * @throws RecipeStepNotFoundException 
+	 * @throws AccessDeniedException 
 	 */
-	public boolean updateRecipeStep(RecipeStep rs) throws IOException, RecipeStepNotFoundException {
+	public boolean updateRecipeStep(RecipeStep rs) throws RecipeStepNotFoundException, AccessDeniedException {
 		Boolean ret = true;
 		String fileName = new String(rs.getUid() + ".recipestep");
 		File file = new File(fileName);
-		
+		FileOutputStream pfile = null;
+		ObjectOutputStream ofile = null;
 		if(!file.canWrite()) {
 			throw new AccessDeniedException("Cannot write to directory");
 		}
@@ -88,12 +141,34 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 			throw new RecipeStepNotFoundException("RecipeStep cant be updated. id("+rs.getUid()+")");
 		}
 		
-		FileOutputStream pfile = new FileOutputStream(fileName);
-		ObjectOutputStream ofile = new ObjectOutputStream(pfile);
-		ofile.writeObject(rs);
-		ofile.close();
+		try {
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(rs);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			if(ofile != null) {
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(pfile != null) {
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}try {
+				ofile.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return ret;	
 	}
-	
-	
 }

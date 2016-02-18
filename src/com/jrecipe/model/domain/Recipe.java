@@ -14,14 +14,21 @@ import java.util.List;
  */
 public class Recipe implements Serializable {
     
+    /**
+	 * private unique id for Serializable class.
+	 */
 	private static final long serialVersionUID = 5054293137257852541L;
 
+	/* unique id of this object */
 	private Integer uid;
     
-    private String name;
+	/* display text for this object */
+	private String name;
     
+	/* list of steps in the recipe */
     private List<RecipeStep> steps;
     
+    /* list of ingredients in the recipe */
     private List<Ingredient> ingredients;
 
     /**
@@ -30,7 +37,6 @@ public class Recipe implements Serializable {
     public Recipe() {
     	
     }
-    
     
     /**
      * Public constructor that accepts a set of arguments for fields.
@@ -124,6 +130,9 @@ public class Recipe implements Serializable {
 		this.ingredients = ingredients;
 	}
 
+	/** 
+	 * Hashcode for class. 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -135,6 +144,10 @@ public class Recipe implements Serializable {
 		return result;
 	}
 
+	/** 
+	 * The equals method for this object
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -167,6 +180,10 @@ public class Recipe implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Used to print the object to a string format
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return "Recipe [uid=" + uid + ", name=" + name + ", steps=" + steps + ", ingredients=" + ingredients + "]";
@@ -179,7 +196,7 @@ public class Recipe implements Serializable {
 	 */
 	public Boolean validate() {
 		if(this.getUid() == null || this.getUid() < 0) return  false;
-		if(this.getName().length() == 0) return false;
+		if(this.getName()== null) return false;
 		if(this.getIngredients() == null ) return false;
 		if(this.getSteps() == null ) return false;
 		return true;

@@ -13,6 +13,11 @@ import com.jrecipe.model.services.IService;
 public interface IIngredientService extends IService {
 	
 	/**
+	 * Identifier for this service. 
+	 */
+	public final String NAME = "IIngredientService";
+	
+	/**
 	 * This function creates a valid ingredient object. 
 	 * @param name Name of the ingreident.
 	 * @param unit Units of the ingredient.

@@ -24,7 +24,9 @@ import com.jrecipe.model.services.recipestepservice.IRecipeStepService;
  */
 public class ServiceFactoryTest {
 
-	/* our class reference to the singleton object */
+	/**
+	 * Singleton reference object for testing
+	 */
 	ServiceFactory serviceFactory;
 		
 	/**

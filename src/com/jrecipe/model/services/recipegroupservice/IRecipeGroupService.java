@@ -1,6 +1,5 @@
 package com.jrecipe.model.services.recipegroupservice;
 
-import com.jrecipe.model.domain.Recipe;
 import com.jrecipe.model.domain.RecipeGroup;
 import com.jrecipe.model.services.IService;
 import com.jrecipe.model.services.exception.RecipeGroupSearchFailedException;
@@ -13,6 +12,11 @@ import com.jrecipe.model.services.exception.RecipeGroupSearchFailedException;
  * @since 0.0.2
  */
 public interface IRecipeGroupService extends IService {
+	
+	/**
+	 * Identifier for this service. 
+	 */
+	public final String NAME = "IRecipeGroupService";
 	
 	/**
 	 * Creates recipegroup

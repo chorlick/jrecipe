@@ -13,6 +13,12 @@ import com.jrecipe.model.services.IService;
 public interface IRecipeService extends IService{
 
 	/**
+	 * Identifier for this service. 
+	 */
+	public final String NAME = "RecipeService";
+
+	
+	/**
 	 * Create new valid Recipe object.
 	 * @return Recipe object
 	 */

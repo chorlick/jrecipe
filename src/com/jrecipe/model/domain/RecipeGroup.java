@@ -15,12 +15,18 @@ import com.jrecipe.model.domain.Recipe;
  */
 public class RecipeGroup implements Serializable {
     
+    /**
+	 * private unique id for Serializable class.
+	 */
 	private static final long serialVersionUID = -6939736342916890127L;
 
+	/* uid of the object */
 	private Integer uid;
     
+	/* display text for this object */
     private String name;
     
+	/* list of recipes thta belong to this group*/
     private List<Recipe> recipes;
     
     /**
@@ -81,6 +87,9 @@ public class RecipeGroup implements Serializable {
      */
     public void setRecipes(List<Recipe> recipes)  { this.recipes = recipes; }
 
+	/**
+	 * Hashcode for class. 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -91,6 +100,10 @@ public class RecipeGroup implements Serializable {
 		return result;
 	}
 
+	/** 
+	 * The equals method for this object
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -118,7 +131,9 @@ public class RecipeGroup implements Serializable {
 		return true;
 	}
 
-
+	/**
+	 *  Used to print the object to a string format
+	 */
 	@Override
 	public String toString() {
 		return "RecipeGroup [uid=" + uid + ", name=" + name + ", recipes=" + recipes + "]";

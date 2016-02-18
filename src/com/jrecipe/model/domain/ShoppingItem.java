@@ -15,10 +15,15 @@ import java.io.Serializable;
  */
 public class ShoppingItem implements Serializable{
     
+    /**
+	 * private unique id for Serializable class.
+	 */
 	private static final long serialVersionUID = 2051113090021030768L;
 
+	/* ingredient for this item. */
 	private Ingredient ingredient;
     
+	/* indicates if the item has been pick yet. */
     private Boolean picked;
 
 	/**
@@ -62,6 +67,9 @@ public class ShoppingItem implements Serializable{
 		this.picked = picked;
 	}
 
+	/** 
+	 * Hashcode for class. 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -71,6 +79,10 @@ public class ShoppingItem implements Serializable{
 		return result;
 	}
 
+	/** 
+	 * The equals method for this object
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -93,6 +105,10 @@ public class ShoppingItem implements Serializable{
 		return true;
 	}
 
+	
+	/**
+	 * Used to print the object to a string format
+	 */
 	@Override
 	public String toString() {
 		return "ShoppingItem [ingredient=" + ingredient + ", picked=" + picked + "]";

@@ -1,8 +1,10 @@
 package com.jrecipe.model.services.factory;
 
+import java.io.IOException;
+
 import com.jrecipe.model.business.exception.ServiceLoadException;
 import com.jrecipe.model.services.IService;
-import com.jrecipe.model.services.factory.ServiceFactory;
+import com.jrecipe.model.services.manager.PropertyManager;
 
 /**
  * Basic service factory use to instaitate 
@@ -53,17 +55,28 @@ public class ServiceFactory {
 	/**
 	 * Returns the value of a given key for a service name 
 	 * from the application.properties 
+	 * *Note updated from the week 5 homework example.
 	 * 
 	 * @param serviceName The name of the key
 	 * @return Returns the value from the key
 	 * @throws Exception Exception on file io issues
 	 */
-	private String getImplName(String serviceName) throws Exception {
-		java.util.Properties props = new java.util.Properties();
-		String propertyFileLocation = System.getProperty("propertyLoc");
-		java.io.FileInputStream fis = new java.io.FileInputStream(propertyFileLocation);
-		props.load(fis);
-		fis.close();
-		return props.getProperty(serviceName);
+	private String getImplName (String serviceName)
+	{
+		return PropertyManager.getPropertyValue(serviceName);
+	}
+	
+	/**
+	 * Function to get the working directory
+	 * from the properties file. 
+	 * Modified to make this funciton return from the propmanager. 
+	 * 
+	 * @return String working directory location
+	 * @throws IOException 
+	 */
+	public String getUserHome() {
+		String workspace = "./";
+		workspace = getImplName("workspace");
+		return workspace;
 	}
 }

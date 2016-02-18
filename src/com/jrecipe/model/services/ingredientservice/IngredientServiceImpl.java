@@ -2,7 +2,6 @@ package com.jrecipe.model.services.ingredientservice;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +10,7 @@ import java.nio.file.AccessDeniedException;
 
 import com.jrecipe.model.domain.Ingredient;
 import com.jrecipe.model.services.exception.IngredientNotFoundException;
+import com.jrecipe.model.services.factory.ServiceFactory;
 
 /**
  * Implementation used to wrap IngredientServiceInterface objects.
@@ -25,31 +25,9 @@ public class IngredientServiceImpl implements IIngredientService {
 	private static Integer count = 0;
 	
 	/**
-	 * Function to get the working directory
-	 * from the properties file
-	 * 
-	 * @return String working directory location
-	 * @throws IOException 
+	 *Overrides the interface function, used to create
+	 * a new Ingredient
 	 */
-	private String getUserHome() {
-		String workspace = "./";
-		try {
-			java.util.Properties props = new java.util.Properties();
-			String propertyFileLocation = System.getProperty("propertyLoc");
-			java.io.FileInputStream fis;
-			fis = new java.io.FileInputStream(propertyFileLocation);
-			props.load(fis);
-			workspace = props.getProperty("workspace");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 return workspace;
-	}
-	
 	@Override
 	public Ingredient createIngredient(String name, String unit, String value) {
 		Ingredient ingredient = new Ingredient(count++, name, unit, value);
@@ -63,21 +41,35 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * @return Boolean true if saved corectly
 	 * @throws IOException 
 	 */
-	public Boolean saveIngredient(Ingredient in) throws IOException {
+	public Boolean saveIngredient(Ingredient in) throws IOException  {
 		Boolean ret = true;
-		String fileName = new String(getUserHome() + in.getId() + ".ingredient");
+		FileOutputStream pfile = null;
+		ObjectOutputStream ofile = null;
+		String fileName = new String(ServiceFactory.getInstance().getUserHome() + in.getId() + ".ingredient");
 		File file = new File(fileName);
-		File home = new File(getUserHome());
+		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
 			throw new AccessDeniedException("Cannot write to directory " + fileName);
 		}
-		file.createNewFile();
-		FileOutputStream pfile = new FileOutputStream(fileName);
-		ObjectOutputStream ofile = new ObjectOutputStream(pfile);
-		ofile.writeObject(in);
-		ofile.close();
 		
-		return ret;	
+		try {
+			file.createNewFile();
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(ofile != null) {
+				ofile.close();
+			}
+	
+			if(pfile != null) {
+				pfile.close();	
+			}
+		}
+		return ret;
 	}
 	
 	/**
@@ -89,21 +81,34 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Ingredient loadIngredient(Integer id) throws IngredientNotFoundException, IOException, ClassNotFoundException {
+	public Ingredient loadIngredient(Integer id) throws IngredientNotFoundException {
 		Ingredient in = null;
-		
 		String fileName = new String(id + ".ingredient");
 		File file = new File(fileName);
-		
+		ObjectInputStream ios = null;
 		if(!file.exists()) {
 			throw new IngredientNotFoundException("No ingredient found matching id(" + id +")");
 		}
 		
-		FileInputStream pfile = new FileInputStream(fileName);
-		ObjectInputStream ios = new ObjectInputStream(pfile);
+		FileInputStream pfile;
+		try {
+			pfile = new FileInputStream(fileName);
+			ios = new ObjectInputStream(pfile);
+			in = (Ingredient) ios.readObject();
+
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new IngredientNotFoundException("Unable to find Ingredient");
+		}finally {
+			if(ios != null ){
+				try {
+					ios.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		
-		in = (Ingredient) ios.readObject();
-		ios.close();
 		return in;
 	}
 	
@@ -134,12 +139,14 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * @return Boolean returns true if the ingredient is updated, false if not. 
 	 * @throws IOException
 	 * @throws IngredientNotFoundException
+	 * @throws AccessDeniedException 
 	 */
-	public boolean updateIngredient(Ingredient in) throws IOException, IngredientNotFoundException {
+	public boolean updateIngredient(Ingredient in) throws IngredientNotFoundException, IOException   {
 		Boolean ret = true;
 		String fileName = new String(in.getId() + ".ingredient");
 		File file = new File(fileName);
-		
+		ObjectOutputStream ofile = null;
+		FileOutputStream pfile = null;
 		if(!file.canWrite()) {
 			throw new AccessDeniedException("Cannot write to directory");
 		}
@@ -148,10 +155,34 @@ public class IngredientServiceImpl implements IIngredientService {
 			throw new IngredientNotFoundException("Ingredient cant be updated. id("+in.getId()+")");
 		}
 		
-		FileOutputStream pfile = new FileOutputStream(fileName);
-		ObjectOutputStream ofile = new ObjectOutputStream(pfile);
-		ofile.writeObject(in);
-		ofile.close();
+		try {
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}finally{
+			if(ofile != null) {
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(pfile != null) {
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}				try {
+				ofile.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return ret;	
 	}

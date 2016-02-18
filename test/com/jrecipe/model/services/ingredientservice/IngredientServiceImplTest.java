@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jrecipe.model.business.exception.ServiceLoadException;
-import com.jrecipe.model.domain.Recipe;
 import com.jrecipe.model.services.factory.ServiceFactory;
-import com.jrecipe.model.services.recipegroupservice.RecipeGroupServiceImpl;
-
 import junit.framework.TestCase;
 
 /** 
@@ -19,10 +16,16 @@ import junit.framework.TestCase;
  * @since 0.0.2
  */
 public class IngredientServiceImplTest extends TestCase {
-
-
+	
+	/**
+	 * Singleton reference object for testing
+	 */
 	ServiceFactory serviceFactory;
 	
+	/**
+	 * Runs before each function. 
+	 * @throws Exception 
+	 */
 	@Before
 	public void setUp() throws Exception {
 		serviceFactory = ServiceFactory.getInstance();		

@@ -11,12 +11,18 @@ import java.io.Serializable;
  */
 public class RecipeStep implements Serializable {
 	
+    /**
+	 * private unique id for Serializable class.
+	 */
 	private static final long serialVersionUID = -4640726823274534903L;
 
+	/* unique id of the object */
 	private Integer uid;
 	
+	/* display text for this object */
 	private String text;
 	
+	/* index value of the step, used to help with order */
 	private Integer step;
 
 	/**
@@ -73,6 +79,9 @@ public class RecipeStep implements Serializable {
 		this.step = step;
 	}
 
+	/** 
+	 * Hashcode for class. 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,6 +92,10 @@ public class RecipeStep implements Serializable {
 		return result;
 	}
 
+	/** 
+	 * The equals method for this object
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -110,6 +123,9 @@ public class RecipeStep implements Serializable {
 		return true;
 	}
 
+	/**
+	 *  Used to print the object to a string format
+	 */
 	@Override
 	public String toString() {
 		return "RecipeStep [uid=" + uid + ", text=" + text + ", step=" + step + "]";

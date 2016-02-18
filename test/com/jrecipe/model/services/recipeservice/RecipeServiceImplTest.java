@@ -17,8 +17,16 @@ import junit.framework.TestCase;
  * @since 0.0.2
  */
 public class RecipeServiceImplTest extends TestCase{
+	
+	/**
+	 * Singleton reference object for testing
+	 */
 	ServiceFactory serviceFactory;
 	
+	/** 
+	 * Sets up service factory for each test. 
+	 * @throws Exception throws on unable to get instance. 
+	 */
 	@Before
 	public void setUp() throws Exception {
 		serviceFactory = ServiceFactory.getInstance();		

@@ -13,6 +13,7 @@ import com.jrecipe.model.domain.Ingredient;
 import com.jrecipe.model.domain.Recipe;
 import com.jrecipe.model.domain.RecipeStep;
 import com.jrecipe.model.services.exception.RecipeNotFoundException;
+import com.jrecipe.model.services.factory.ServiceFactory;
 
 /**
  * Implementation for the RecipeService interface.
@@ -25,12 +26,53 @@ public class RecipeServiceImpl implements IRecipeService{
 
 	private static Integer count = 0;
 	
+	/**
+	 * Creates new recipe object. 
+	 */
 	@Override
 	public Recipe createRecipe() {
 		Recipe recipe = new Recipe(count++, new String(), 
 				new ArrayList<RecipeStep>(),new ArrayList<Ingredient>() );
 		return recipe;
 	}
+	
+	/**
+	 * Function to save Recipe to disk
+	 * 
+	 * @param recipe RecipeStep the user wishes to save
+	 * @return Boolean true if saved corectly
+	 * @throws IOException 
+	 */
+	public Boolean saveRecipeStep(Recipe recipe) throws IOException {
+		Boolean ret = true;
+		FileOutputStream pfile = null;
+		ObjectOutputStream ofile = null;
+		String fileName = new String(ServiceFactory.getInstance().getUserHome() + recipe.getUid() + ".recipe");
+		File file = new File(fileName);
+		File home = new File(ServiceFactory.getInstance().getUserHome());
+		if(!home.canWrite()) {
+			throw new AccessDeniedException("Cannot write to directory " + fileName);
+		}
+
+		try {
+			file.createNewFile();
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(recipe);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			if(ofile != null) {
+				ofile.close();
+			}
+	
+			if(pfile != null) {
+				pfile.close();	
+			}
+		}
+		return ret;	
+	}	
 	
 	/**
 	 * Attempts to load an Recipe from disk.
@@ -41,9 +83,10 @@ public class RecipeServiceImpl implements IRecipeService{
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
-	public Recipe loadRecipe(Integer id) throws RecipeNotFoundException, IOException, ClassNotFoundException {
+	public Recipe loadRecipe(Integer id) throws RecipeNotFoundException{
 		Recipe recipe = null;
-		
+		FileInputStream pfile = null;
+		ObjectInputStream ios = null;
 		String fileName = new String(id + ".recipe");
 		File file = new File(fileName);
 		
@@ -51,13 +94,24 @@ public class RecipeServiceImpl implements IRecipeService{
 			throw new RecipeNotFoundException("No Recipe found matching id(" + id +")");
 		}
 		
-		FileInputStream pfile = new FileInputStream(fileName);
-		ObjectInputStream ios = new ObjectInputStream(pfile);
-		
-		recipe = (Recipe) ios.readObject();
-		ios.close();
-		pfile.close();
+		try {
+			pfile = new FileInputStream(fileName);
+			ios = new ObjectInputStream(pfile);
+			recipe = (Recipe) ios.readObject();
 
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RecipeNotFoundException("Unable to find Recipe");
+		}finally {
+			if(ios != null ){
+				try {
+					ios.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		return recipe;
 	}
 	
@@ -71,7 +125,7 @@ public class RecipeServiceImpl implements IRecipeService{
 	 */
 	public boolean deleteRecipe(Integer id) throws RecipeNotFoundException {
 		Boolean ret = true;
-		String fileName = new String(id + ".ingredient");
+		String fileName = new String(id + ".recipe");
 		File pfile = new File(fileName);
 		if(!pfile.exists()) {
 			throw new RecipeNotFoundException("No Recipe found matching id(" + id +")");
@@ -91,9 +145,10 @@ public class RecipeServiceImpl implements IRecipeService{
 	 */
 	public boolean updateRecipe(Recipe recipe) throws IOException, RecipeNotFoundException {
 		Boolean ret = true;
-		String fileName = new String(recipe.getUid() + ".ingredient");
+		String fileName = new String(recipe.getUid() + ".recipe");
 		File file = new File(fileName);
-		
+		FileOutputStream pfile = null;
+		ObjectOutputStream ofile = null;
 		if(!file.canWrite()) {
 			throw new AccessDeniedException("Cannot write to directory");
 		}
@@ -102,12 +157,34 @@ public class RecipeServiceImpl implements IRecipeService{
 			throw new RecipeNotFoundException("Recipe cant be updated. id("+recipe.getUid()+")");
 		}
 		
-		FileOutputStream pfile = new FileOutputStream(fileName);
-		ObjectOutputStream ofile = new ObjectOutputStream(pfile);
-		ofile.writeObject(recipe);
-		ofile.close();
-		
-		return ret;	
+		try {
+			pfile = new FileOutputStream(fileName);
+			ofile = new ObjectOutputStream(pfile);
+			ofile.writeObject(recipe);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}finally{
+			if(ofile != null) {
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(pfile != null) {
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}				try {
+				ofile.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
 	}
-
 }
