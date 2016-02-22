@@ -1,11 +1,23 @@
 package com.jrecipe.view.mainjframe;
+
+import com.jrecipe.view.dialogs.newgroupdialog.NewGroupDialog;
+import com.jrecipe.view.dialogs.newingredientdialog.NewIngredientDialog;
+import com.jrecipe.view.dialogs.newstepdialog.NewStepDialog;
+
 /**
- *
- * @author chorl_000
+ * This class is a sipmle dialog
+ * for Steps.
+ * 
+ * @author Chris Horlick
+ * @version 0.0.6
+ * @since 0.0.6
  */
 public class JRecipeMainFrame extends javax.swing.JFrame {
 
-    /**
+    /* serial id value */
+	private static final long serialVersionUID = -4152457686901820272L;
+	
+	/**
      * Creates new form JRecipe
      */
     public JRecipeMainFrame() {
@@ -36,17 +48,13 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
         ingredientList = new javax.swing.JList<>();
         newIngredientButton = new javax.swing.JButton();
         deleteIngredientButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
         closeFileMenuOption = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        recipeStepList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(recipeStepList);
 
         recipeNameLabel.setText("Recipe Name");
@@ -56,25 +64,35 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
         recipeIngredientLabel.setText("Recipe Ingredients");
 
         newStepButton.setText("New Step");
+        newStepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newStepButtonActionPerformed(evt);
+            }
+        });
 
         deleteStepButton.setText("Detele Step");
 
         recipeGroupLabel.setText("Recipe Group");
 
-        recipeGroupCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         newGroupButton.setText("New Group");
-
-        ingredientList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        newGroupButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newGroupButtonActionPerformed(evt);
+            }
         });
+
         jScrollPane2.setViewportView(ingredientList);
 
         newIngredientButton.setText("New Ingredient");
+        newIngredientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newIngredientButtonActionPerformed(evt);
+            }
+        });
 
         deleteIngredientButton.setText("Delete Ingredient");
+
+        jButton1.setText("Save Recipe");
 
         fileMenuItem.setText("File");
 
@@ -97,6 +115,7 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(recipeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                         .addGap(19, 19, 19)
@@ -161,6 +180,8 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newIngredientButton)
                     .addComponent(deleteIngredientButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -171,6 +192,21 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
         System.exit(0);
     }                                                   
 
+    private void newGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        NewGroupDialog d = new NewGroupDialog();
+        d.show();
+    }                                              
+
+    private void newStepButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        NewStepDialog d = new NewStepDialog();
+        d.show();
+    }                                             
+
+    private void newIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        NewIngredientDialog d = new NewIngredientDialog();
+        d.show();
+    }                                                   
+
     
 
     // Variables declaration - do not modify                     
@@ -179,6 +215,7 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton deleteStepButton;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.JList<String> ingredientList;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuBar menuBar;
@@ -192,6 +229,5 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField recipeNameTextField;
     private javax.swing.JLabel recipeStepLabel;
     private javax.swing.JList<String> recipeStepList;
-    // End of variables declaration    
-   
+    // End of variables declaration                   
 }
