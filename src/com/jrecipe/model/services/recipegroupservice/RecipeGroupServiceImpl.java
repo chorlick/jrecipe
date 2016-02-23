@@ -6,11 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 
 import com.jrecipe.model.domain.Recipe;
 import com.jrecipe.model.domain.RecipeGroup;
+import com.jrecipe.model.services.exception.RecipeGroupException;
 import com.jrecipe.model.services.exception.RecipeGroupNotFoundException;
 import com.jrecipe.model.services.exception.RecipeGroupSearchFailedException;
 import com.jrecipe.model.services.factory.ServiceFactory;
@@ -60,9 +60,10 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 	 * 
 	 * @param rg RecipeGroup the user wishes to save
 	 * @return Boolean true if saved corectly
+	 * @throws RecipeGroupException 
 	 * @throws IOException 
 	 */
-	public Boolean saveRecipeGroup(RecipeGroup rg) throws IOException {
+	public Boolean saveRecipeGroup(RecipeGroup rg) throws RecipeGroupException  {
 		Boolean ret = true;
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
@@ -70,7 +71,7 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 		File file = new File(fileName);
 		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory " + fileName);
+			throw new RecipeGroupException("Cannot write to directory " + fileName);
 		}
 
 		try {
@@ -80,14 +81,21 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 			ofile.writeObject(rg);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
 		}finally {
 			if(ofile != null) {
-				ofile.close();
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 	
 			if(pfile != null) {
-				pfile.close();	
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
 			}
 		}
 		return ret;	
@@ -164,15 +172,16 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 	 * @return Boolean returns true if the RecipeGroup is updated, false if not. 
 	 * @throws IOException
 	 * @throws RecipeGroupNotFoundException
+	 * @throws RecipeGroupException 
 	 */
-	public boolean updateRecipeGroup(RecipeGroup rg) throws IOException, RecipeGroupNotFoundException {
+	public boolean updateRecipeGroup(RecipeGroup rg) throws RecipeGroupNotFoundException, RecipeGroupException {
 		Boolean ret = true;
 		String fileName = new String(rg.getUid() + ".ingredient");
 		File file = new File(fileName);
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
 		if(!file.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory");
+			throw new RecipeGroupException("Cannot write to directory");
 		}
 		
 		if(!file.exists()) {

@@ -2,13 +2,10 @@ package com.jrecipe.model.services.recipegroupservice;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Before;
-import org.junit.Test;
-
 import com.jrecipe.model.business.exception.ServiceLoadException;
 import com.jrecipe.model.domain.RecipeGroup;
+import com.jrecipe.model.services.exception.RecipeGroupException;
 import com.jrecipe.model.services.exception.RecipeGroupNotFoundException;
 import com.jrecipe.model.services.factory.ServiceFactory;
 
@@ -50,10 +47,13 @@ public class RecipeGroupServiceImplTest {
 			service.saveRecipeGroup(group);
 			load = service.loadRecipeGroup(group.getUid());
 			assertTrue(load.equals(group));	
-		} catch (ServiceLoadException | IOException e) {
+		} catch (ServiceLoadException e ) {
 			e.printStackTrace();
 			fail("Service load issue");
 		} catch (RecipeGroupNotFoundException e) {
+			e.printStackTrace();
+			fail("Recipe group not found");
+		} catch (RecipeGroupException e) {
 			e.printStackTrace();
 			fail("Recipe group not found");
 		}

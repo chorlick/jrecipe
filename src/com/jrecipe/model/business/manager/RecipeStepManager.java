@@ -34,6 +34,13 @@ public class RecipeStepManager extends ManagerSuperType {
 		return instance;
 	}
 
+	/**
+	 * Public interface that clients can use to call certain actions. 
+	 * 
+	 * @param commandString Command the client wants to issue. 
+	 * @param app ApplicationState object that is used to represent the application internal state.
+	 * @return returns Boolean, true if the action was successful.
+	 */
 	@Override
 	public Boolean performAction(String commandString, ApplicationState app) {
 

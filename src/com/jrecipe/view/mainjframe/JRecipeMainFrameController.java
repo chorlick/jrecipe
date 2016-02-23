@@ -3,6 +3,9 @@ package com.jrecipe.view.mainjframe;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.jrecipe.application.entrypoint.Main;
+import com.jrecipe.model.business.manager.JRecipeManager;
+
 /**
  * This class is a sipmle dialog
  * for Steps.
@@ -13,10 +16,15 @@ import java.awt.event.ActionListener;
  */
 public class JRecipeMainFrameController implements ActionListener  {
 
+	/**
+	 * Public interface that clients can use to call certain actions. 
+	 * 
+	 * @param commandString Command the client wants to issue. 
+	 * @param app ApplicationState object that is used to represent the application internal state.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		JRecipeManager manager = JRecipeManager.getInstance();
+		manager.performAction("CreateRecipe", Main.state);
 	}
-
 }

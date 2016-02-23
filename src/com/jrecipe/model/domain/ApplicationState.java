@@ -14,4 +14,14 @@ public class ApplicationState {
 	 * */
 	public Recipe recipe;
 	
+	/**
+	 * group we are working with
+	 */
+	public RecipeGroup group;
+
+	/**
+	 * ingredient we are working with
+	 */
+	public Ingredient ingredient;
+	
 }

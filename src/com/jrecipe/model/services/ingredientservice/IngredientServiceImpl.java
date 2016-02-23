@@ -10,6 +10,7 @@ import java.nio.file.AccessDeniedException;
 
 import com.jrecipe.model.domain.Ingredient;
 import com.jrecipe.model.services.exception.IngredientNotFoundException;
+import com.jrecipe.model.services.exception.IngredientSaveException;
 import com.jrecipe.model.services.factory.ServiceFactory;
 
 /**
@@ -39,9 +40,11 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * 
 	 * @param in Ingredient the user wishes to save
 	 * @return Boolean true if saved corectly
+	 * @throws IngredientNotFoundException 
+	 * @throws IngredientSaveException 
 	 * @throws IOException 
 	 */
-	public Boolean saveIngredient(Ingredient in) throws IOException  {
+	public Boolean saveIngredient(Ingredient in) throws IngredientNotFoundException, IngredientSaveException  {
 		Boolean ret = true;
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
@@ -49,7 +52,7 @@ public class IngredientServiceImpl implements IIngredientService {
 		File file = new File(fileName);
 		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory " + fileName);
+			throw new IngredientSaveException("Cannot write to directory " + fileName);
 		}
 		
 		try {
@@ -59,14 +62,22 @@ public class IngredientServiceImpl implements IIngredientService {
 			ofile.writeObject(in);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw  new IngredientNotFoundException("Unable to write object");
 		}finally {
 			if(ofile != null) {
-				ofile.close();
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 	
 			if(pfile != null) {
-				pfile.close();	
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
 			}
 		}
 		return ret;

@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.AccessDeniedException;
 
 import com.jrecipe.model.domain.RecipeStep;
+import com.jrecipe.model.services.exception.RecipeStepException;
 import com.jrecipe.model.services.exception.RecipeStepNotFoundException;
 import com.jrecipe.model.services.factory.ServiceFactory;
 
@@ -125,16 +126,17 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 	 * @return Boolean returns true if the RecipeSTep is updated, false if not. 
 	 * @throws IOException
 	 * @throws RecipeStepNotFoundException 
+	 * @throws RecipeStepException 
 	 * @throws AccessDeniedException 
 	 */
-	public boolean updateRecipeStep(RecipeStep rs) throws RecipeStepNotFoundException, AccessDeniedException {
+	public boolean updateRecipeStep(RecipeStep rs) throws RecipeStepNotFoundException, RecipeStepException  {
 		Boolean ret = true;
 		String fileName = new String(rs.getUid() + ".recipestep");
 		File file = new File(fileName);
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
 		if(!file.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory");
+			throw new RecipeStepException("Cannot write to directory");
 		}
 		
 		if(!file.exists()) {
