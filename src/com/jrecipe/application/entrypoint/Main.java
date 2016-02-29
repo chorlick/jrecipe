@@ -1,7 +1,7 @@
 package com.jrecipe.application.entrypoint;
 
 import com.jrecipe.model.domain.ApplicationState;
-import com.jrecipe.view.mainjframe.JRecipeMainFrame;
+import com.jrecipe.view.recipedesktopview.RecipeDesktopPane;
 /**
  * @author chorl_000
  *
@@ -17,7 +17,7 @@ public class Main {
      */
     @SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-    	JRecipeMainFrame frame = new JRecipeMainFrame();
-    	frame.show();
+    	RecipeDesktopPane desktop= new RecipeDesktopPane();
+    	desktop.show();
 	}
 }

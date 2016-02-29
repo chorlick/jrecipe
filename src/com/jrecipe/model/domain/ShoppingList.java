@@ -19,9 +19,30 @@ public class ShoppingList implements Serializable {
 	 */
 	private static final long serialVersionUID = 3307237536696728304L;
 	
+	/* unique id of the object */
+	private Integer uid;
+	
 	/* list of ingredients in shopping list*/
 	private List<Ingredient> ingredients;
 
+	/**
+	 * Returns the private id of the object.
+	 * 
+	 * @return Integer Id of object.
+	 */
+	public Integer getUid() {
+		return uid;
+	}
+
+	/**
+	 * Sets the value of the id. 
+	 * 
+	 * @param uid Integer {@link RecipeStep#uid}
+	 */
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+	
 	/**
 	 * Returns the List of ingredients currently in the 
 	 * shopping list. 

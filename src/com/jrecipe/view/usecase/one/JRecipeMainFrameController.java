@@ -1,4 +1,4 @@
-package com.jrecipe.view.mainjframe;
+package com.jrecipe.view.usecase.one;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,6 @@
-package com.jrecipe.view.mainjframe;
+package com.jrecipe.view.usecase.one;
+
+import javax.swing.JFrame;
 
 import com.jrecipe.view.dialogs.newgroupdialog.NewGroupDialog;
 import com.jrecipe.view.dialogs.newingredientdialog.NewIngredientDialog;
@@ -12,7 +14,7 @@ import com.jrecipe.view.dialogs.newstepdialog.NewStepDialog;
  * @version 0.0.6
  * @since 0.0.6
  */
-public class JRecipeMainFrame extends javax.swing.JFrame {
+public class JRecipeMainFrame extends javax.swing.JInternalFrame {
 
     /* serial id value */
 	private static final long serialVersionUID = -4152457686901820272L;
@@ -26,7 +28,6 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-
         jScrollPane1 = new javax.swing.JScrollPane();
         recipeStepList = new javax.swing.JList<>();
         recipeNameLabel = new javax.swing.JLabel();
@@ -43,21 +44,15 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
         newIngredientButton = new javax.swing.JButton();
         deleteIngredientButton = new javax.swing.JButton();
         saveRecipeButton = new javax.swing.JButton();
-        menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
         closeFileMenuOption = new javax.swing.JMenuItem();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        
         jScrollPane1.setViewportView(recipeStepList);
-
         recipeNameLabel.setText("Recipe Name");
-
         recipeStepLabel.setText("Recipe Steps");
-
         recipeIngredientLabel.setText("Recipe Ingredients");
-
         newStepButton.setText("New Step");
+        
         newStepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newStepButtonActionPerformed(evt);
@@ -97,10 +92,6 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
             }
         });
         fileMenuItem.add(closeFileMenuOption);
-
-        menuBar.add(fileMenuItem);
-
-        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,7 +169,8 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
                 .addComponent(saveRecipeButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
+        this.setClosable(true);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         pack();
     }                 
 
@@ -212,7 +204,6 @@ public class JRecipeMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveRecipeButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton newGroupButton;
     private javax.swing.JButton newIngredientButton;
     private javax.swing.JButton newStepButton;
