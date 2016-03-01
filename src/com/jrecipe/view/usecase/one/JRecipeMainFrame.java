@@ -1,7 +1,5 @@
 package com.jrecipe.view.usecase.one;
 
-import javax.swing.JFrame;
-
 import com.jrecipe.view.dialogs.newgroupdialog.NewGroupDialog;
 import com.jrecipe.view.dialogs.newingredientdialog.NewIngredientDialog;
 import com.jrecipe.view.dialogs.newstepdialog.NewStepDialog;

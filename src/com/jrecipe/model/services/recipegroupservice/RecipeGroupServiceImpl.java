@@ -61,7 +61,6 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 	 * @param rg RecipeGroup the user wishes to save
 	 * @return Boolean true if saved corectly
 	 * @throws RecipeGroupException 
-	 * @throws IOException 
 	 */
 	public Boolean saveRecipeGroup(RecipeGroup rg) throws RecipeGroupException  {
 		Boolean ret = true;
@@ -107,7 +106,6 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
 	 * @param id Numerical id of Ingredient.
 	 * @return RecipeGroup if loaded from disk correctly. 
 	 * @throws RecipeGroupNotFoundException 
-	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
 	public RecipeGroup loadRecipeGroup(Integer id) throws RecipeGroupNotFoundException {
@@ -170,7 +168,6 @@ public class RecipeGroupServiceImpl implements IRecipeGroupService {
    	 *
 	 * @param rg RecipeGroup to update
 	 * @return Boolean returns true if the RecipeGroup is updated, false if not. 
-	 * @throws IOException
 	 * @throws RecipeGroupNotFoundException
 	 * @throws RecipeGroupException 
 	 */

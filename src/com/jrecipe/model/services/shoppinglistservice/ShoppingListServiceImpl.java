@@ -27,9 +27,9 @@ public class ShoppingListServiceImpl implements IShoppingListService{
 	 * 
 	 * @param sl ShoppingList the user wishes to save
 	 * @return Boolean true if saved corectly
-	 * @throws IOException 
+	 * @throws ShoppingListException 
 	 */
-	public Boolean saveShoppingList(ShoppingList sl) throws IOException {
+	public Boolean saveShoppingList(ShoppingList sl) throws  ShoppingListException {
 		Boolean ret = true;
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
@@ -37,7 +37,7 @@ public class ShoppingListServiceImpl implements IShoppingListService{
 		File file = new File(fileName);
 		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory " + fileName);
+			throw new ShoppingListException("Cannot write to directory " + fileName);
 		}
 
 		try {
@@ -47,14 +47,24 @@ public class ShoppingListServiceImpl implements IShoppingListService{
 			ofile.writeObject(sl);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw new ShoppingListException("Unable to save file");
 		}finally {
 			if(ofile != null) {
-				ofile.close();
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new ShoppingListException("Unable to save file");
+				}
 			}
 	
 			if(pfile != null) {
-				pfile.close();	
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new ShoppingListException("Unable to save file");
+				}	
 			}
 		}
 		return ret;	
@@ -66,7 +76,6 @@ public class ShoppingListServiceImpl implements IShoppingListService{
 	 * @param id Numerical id of ShoppingList.
 	 * @return ShoppingList if loaded from disk correctly. 
 	 * @throws ShoppingListNotFoundException 
-	 * 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
 	public ShoppingList loadShoppingList(Integer id) throws ShoppingListNotFoundException {
@@ -124,7 +133,6 @@ public class ShoppingListServiceImpl implements IShoppingListService{
    	 *
 	 * @param sl ShoppingList to update
 	 * @return Boolean returns true if the ShoppingList is updated, false if not. 
-	 * @throws IOException
 	 * @throws ShoppingListNotFoundException 
 	 * @throws ShoppingListException 
 	 * @throws AccessDeniedException 

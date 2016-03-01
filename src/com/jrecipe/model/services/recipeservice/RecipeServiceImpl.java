@@ -41,9 +41,9 @@ public class RecipeServiceImpl implements IRecipeService{
 	 * 
 	 * @param recipe RecipeStep the user wishes to save
 	 * @return Boolean true if saved corectly
-	 * @throws IOException 
+	 * @throws RecipeNotFoundException 
 	 */
-	public Boolean saveRecipeStep(Recipe recipe) throws IOException {
+	public Boolean saveRecipeStep(Recipe recipe) throws RecipeNotFoundException {
 		Boolean ret = true;
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
@@ -51,7 +51,7 @@ public class RecipeServiceImpl implements IRecipeService{
 		File file = new File(fileName);
 		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory " + fileName);
+			throw new RecipeNotFoundException("Cannot write to directory " + fileName);
 		}
 
 		try {
@@ -61,14 +61,24 @@ public class RecipeServiceImpl implements IRecipeService{
 			ofile.writeObject(recipe);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw new RecipeNotFoundException("Cannot write to directory " + fileName);
 		}finally {
 			if(ofile != null) {
-				ofile.close();
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RecipeNotFoundException("Cannot write to directory " + fileName);
+				}
 			}
 	
 			if(pfile != null) {
-				pfile.close();	
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RecipeNotFoundException("Cannot write to directory " + fileName);
+				}	
 			}
 		}
 		return ret;	
@@ -80,7 +90,6 @@ public class RecipeServiceImpl implements IRecipeService{
 	 * @param id Numerical id of Ingredient.
 	 * @return Recipe if loaded from disk correctly. 
 	 * @throws RecipeNotFoundException 
-	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
 	public Recipe loadRecipe(Integer id) throws RecipeNotFoundException{
@@ -140,17 +149,16 @@ public class RecipeServiceImpl implements IRecipeService{
    	 *
 	 * @param recipe Recipe to update
 	 * @return Boolean returns true if the RecipeGroup is updated, false if not. 
-	 * @throws IOException
 	 * @throws RecipeNotFoundException 
 	 */
-	public boolean updateRecipe(Recipe recipe) throws IOException, RecipeNotFoundException {
+	public boolean updateRecipe(Recipe recipe) throws RecipeNotFoundException {
 		Boolean ret = true;
 		String fileName = new String(recipe.getUid() + ".recipe");
 		File file = new File(fileName);
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
 		if(!file.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory");
+			throw new RecipeNotFoundException("Cannot write to directory");
 		}
 		
 		if(!file.exists()) {
@@ -163,7 +171,7 @@ public class RecipeServiceImpl implements IRecipeService{
 			ofile.writeObject(recipe);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw new RecipeNotFoundException("Cannot write to directory");
 		}finally{
 			if(ofile != null) {
 				try {

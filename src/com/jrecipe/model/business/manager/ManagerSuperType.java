@@ -52,7 +52,6 @@ public abstract class ManagerSuperType {
 	 * 
 	 * @param commandString Command the client wants to issue. 
 	 * @param app ApplicationState object that is used to represent the application internal state.
-	 * @return returns Boolean, true if the action was successful.
 	 */
-	public abstract Boolean performAction(String commandString, ApplicationState app);
+	public abstract void performAction(String commandString, ApplicationState app);
 }

@@ -39,12 +39,10 @@ public class RecipeStepManager extends ManagerSuperType {
 	 * 
 	 * @param commandString Command the client wants to issue. 
 	 * @param app ApplicationState object that is used to represent the application internal state.
-	 * @return returns Boolean, true if the action was successful.
 	 */
 	@Override
-	public Boolean performAction(String commandString, ApplicationState app) {
-
-		return null;
+	public void performAction(String commandString, ApplicationState app) {
+		return ;
 	}
 
 

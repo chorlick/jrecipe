@@ -21,7 +21,6 @@ public class ShoppingListMainFrame extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();

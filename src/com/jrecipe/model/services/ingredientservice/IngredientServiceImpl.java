@@ -27,7 +27,7 @@ public class IngredientServiceImpl implements IIngredientService {
 	
 	/**
 	 *Overrides the interface function, used to create
-	 * a new Ingredient
+	 * a new Ingredient. This does NOT throw any exception. Not any.
 	 */
 	@Override
 	public Ingredient createIngredient(String name, String unit, String value) {
@@ -42,7 +42,6 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * @return Boolean true if saved corectly
 	 * @throws IngredientNotFoundException 
 	 * @throws IngredientSaveException 
-	 * @throws IOException 
 	 */
 	public Boolean saveIngredient(Ingredient in) throws IngredientNotFoundException, IngredientSaveException  {
 		Boolean ret = true;
@@ -89,8 +88,7 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * @param id Numerical id of Ingredient.
 	 * @return Ingredient if loaded from disk correctly. 
 	 * @throws IngredientNotFoundException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+]	 * @throws ClassNotFoundException
 	 */
 	public Ingredient loadIngredient(Integer id) throws IngredientNotFoundException {
 		Ingredient in = null;
@@ -148,18 +146,17 @@ public class IngredientServiceImpl implements IIngredientService {
 	 * 
 	 * @param in Ingredient to update
 	 * @return Boolean returns true if the ingredient is updated, false if not. 
-	 * @throws IOException
 	 * @throws IngredientNotFoundException
 	 * @throws AccessDeniedException 
 	 */
-	public boolean updateIngredient(Ingredient in) throws IngredientNotFoundException, IOException   {
+	public boolean updateIngredient(Ingredient in) throws IngredientNotFoundException   {
 		Boolean ret = true;
 		String fileName = new String(in.getId() + ".ingredient");
 		File file = new File(fileName);
 		ObjectOutputStream ofile = null;
 		FileOutputStream pfile = null;
 		if(!file.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory");
+			throw new IngredientNotFoundException("Cannot write to directory");
 		}
 		
 		if(!file.exists()) {
@@ -172,7 +169,7 @@ public class IngredientServiceImpl implements IIngredientService {
 			ofile.writeObject(in);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw new IngredientNotFoundException("Ingredient cant be updated. id("+in.getId()+")");
 		}finally{
 			if(ofile != null) {
 				try {

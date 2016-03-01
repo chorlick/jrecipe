@@ -45,14 +45,12 @@ public class IngredientManager extends ManagerSuperType {
 	 * 
 	 * @param commandString Command the client wants to issue. 
 	 * @param app ApplicationState object that is used to represent the application internal state.
-	 * @return returns Boolean, true if the action was successful.
-	 */
+=s	 */
 	@Override
-	public Boolean performAction(String commandString, ApplicationState app) {
+	public void performAction(String commandString, ApplicationState app) {
 		if (commandString.equals("CreateIngredient")) {
 			createIngredient(IRecipeService.NAME, app);
 		}
-		return true;
 	}
 	
 	private void createIngredient(String name, ApplicationState app) {

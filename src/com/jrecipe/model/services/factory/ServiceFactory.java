@@ -72,7 +72,6 @@ public class ServiceFactory {
 	 * Modified to make this funciton return from the propmanager. 
 	 * 
 	 * @return String working directory location
-	 * @throws IOException 
 	 */
 	public String getUserHome() {
 		String workspace = "./";

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.jrecipe.model.business.exception.ServiceLoadException;
 import com.jrecipe.model.domain.ApplicationState;
+import com.jrecipe.model.services.exception.RecipeNotFoundException;
 import com.jrecipe.model.services.factory.ServiceFactory;
 import com.jrecipe.model.services.recipeservice.IRecipeService;
 import com.jrecipe.model.services.recipeservice.RecipeServiceImpl;
@@ -47,33 +48,29 @@ public class JRecipeManager extends ManagerSuperType {
 	 * 
 	 * @author mike prassad
 	 * @param commandString Holds the service name to be invoked
-	 * @return Recipe the newly created object;
 	 */
 	@Override
-	public Boolean performAction(String commandString, ApplicationState app) {
-		Boolean action = false;
+	public void performAction(String commandString, ApplicationState app) {
 		if (commandString.equals("CreateRecipe")) {
 			createRecipe(IRecipeService.NAME, app);
 		}
-		return action;
 	}
 
-	private Boolean createRecipe(String name, ApplicationState app) {
-		Boolean action = false;
+	private void createRecipe(String name, ApplicationState app) {
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		RecipeServiceImpl iRecipeServiceImpl;		
 		try {
 			iRecipeServiceImpl = (RecipeServiceImpl) serviceFactory.getService(name);
 			app.recipe = iRecipeServiceImpl.createRecipe();
-			action = iRecipeServiceImpl.saveRecipeStep(app.recipe);
-			return action;
+			try {
+				iRecipeServiceImpl.saveRecipeStep(app.recipe);
+			} catch (RecipeNotFoundException e) {
+				e.printStackTrace();
+			}
 		} catch (ServiceLoadException e) {
 			e.printStackTrace();
 			System.out.println("Error loading service");
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return action;
 	}
 }

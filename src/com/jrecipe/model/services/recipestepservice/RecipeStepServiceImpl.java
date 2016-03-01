@@ -11,6 +11,7 @@ import java.nio.file.AccessDeniedException;
 import com.jrecipe.model.domain.RecipeStep;
 import com.jrecipe.model.services.exception.RecipeStepException;
 import com.jrecipe.model.services.exception.RecipeStepNotFoundException;
+import com.jrecipe.model.services.exception.RecipeStepSaveException;
 import com.jrecipe.model.services.factory.ServiceFactory;
 
 /**
@@ -27,9 +28,9 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 	 * 
 	 * @param rs RecipeStep the user wishes to save
 	 * @return Boolean true if saved corectly
-	 * @throws IOException 
+	 * @throws RecipeStepSaveException 
 	 */
-	public Boolean saveRecipeStep(RecipeStep rs) throws IOException {
+	public Boolean saveRecipeStep(RecipeStep rs) throws RecipeStepSaveException {
 		Boolean ret = true;
 		FileOutputStream pfile = null;
 		ObjectOutputStream ofile = null;
@@ -37,7 +38,7 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 		File file = new File(fileName);
 		File home = new File(ServiceFactory.getInstance().getUserHome());
 		if(!home.canWrite()) {
-			throw new AccessDeniedException("Cannot write to directory " + fileName);
+			throw new RecipeStepSaveException("Cannot write to directory " + fileName);
 		}
 
 		try {
@@ -47,14 +48,25 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 			ofile.writeObject(rs);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
+			throw new RecipeStepSaveException("Unable to save object");
 		}finally {
 			if(ofile != null) {
-				ofile.close();
+				try {
+					ofile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RecipeStepSaveException("Unepxcted error");
+				}
 			}
 	
 			if(pfile != null) {
-				pfile.close();	
+				try {
+					pfile.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new RecipeStepSaveException("Unepxcted error");
+
+				}	
 			}
 		}
 		return ret;	
@@ -66,7 +78,6 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
 	 * @param id Numerical id of Ingredient.
 	 * @return Recipe if loaded from disk correctly. 
 	 * @throws RecipeStepNotFoundException 
-	 * 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */	
 	public RecipeStep loadRecipeStep(Integer id) throws RecipeStepNotFoundException {
@@ -124,7 +135,6 @@ public class RecipeStepServiceImpl implements IRecipeStepService {
    	 *
 	 * @param rs RecipeStep to update
 	 * @return Boolean returns true if the RecipeSTep is updated, false if not. 
-	 * @throws IOException
 	 * @throws RecipeStepNotFoundException 
 	 * @throws RecipeStepException 
 	 * @throws AccessDeniedException 
