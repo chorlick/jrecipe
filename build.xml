@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<!--
+FleetRental Ant Build.xml file
+-->
+
+<project name="jrecipe" basedir=".">
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="bin.dir" value="${basedir}/classes"/> <!-- NOTE: bin maps to classes in FleetRental!! -->
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="config.dir" value="${basedir}/config"/>
+	
+ <!-- Classpath for the project -->	
+ <path id="master-classpath">
+
+ </path>
+
+ <!-- Cleanup and Dir Creation -->	
+<target name="clean" description="Deletes old and creates new classes, and build directories.">
+	<delete dir="${bin.dir}"/>
+ <mkdir dir ="${bin.dir}"/>
+	<delete dir="${build.dir}"/>
+ <mkdir dir ="${build.dir}"/>
+</target>
+	
+ <!-- Compiling Code -->	
+ 	<target name="compile" description="Compiles code" depends="clean">
+  <javac srcdir="${src.dir}"
+         destdir="${bin.dir}">
+         <classpath refid="master-classpath"/>
+  </javac>
+	</target>
+ 
+ <!-- Build Jar -->	
+	<target name="buildjar" depends="compile">
+		<jar jarfile="${build.dir}/jrecipe.jar">
+			<fileset dir="${basedir}">
+				<include name="config/*"/>
+			</fileset>
+			<fileset dir="${bin.dir}">
+			    <include name="**/*.class"/>
+			</fileset>
+			<manifest>
+			    <attribute name="Main-Class" value="com.jrecipe.application.entrypoint.Main"/>
+		    </manifest>
+		</jar>
+		
+  <!-- Copy the config folder over to the build folder: application needs this to load properties file-->
+		<copy todir="${build.dir}">
+			<fileset dir="${basedir}">
+				<include name="config*/**/*"/>
+			</fileset>
+	 </copy>
+
+	</target>
+	
+ <!-- Execute Jar -->	
+	<target name="testjar" depends="buildjar">
+        <java jar="${build.dir}/jrecipe.jar" fork="yes" dir=".">
+        </java>	       
+	</target>
+</project>
